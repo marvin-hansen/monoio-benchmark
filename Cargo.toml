@@ -1,19 +1,48 @@
 [workspace]
 
 members = [
+    "compio-server",
     "monoio-server",
     "tokio-server",
-    "glommio-server",
-
+#    "glommio-server",
     "client",
-
     "config"
 ]
+resolver = "2"
 
 [workspace.dependencies]
-monoio = { version = "0.0" }
+# Internal
+config = { path = "config" }
 
+# External
+clap = { version = "3.2.25", features = ["derive"] }
+compio = { version = "0.13.2", features = ["dispatcher", "macros"] }
+monoio = { version = "0.2.4" }
+#glommio = "0.9.0"
+futures-util = "0.3.29"
+local-sync = "0.1.1"
+tokio = { version = "1.43", features = ["full"] }
+
+
+
+# Optimize all crates
 [profile.release]
-lto = true
-debug = false
+opt-level = 3
+strip = true  # Automatically strip debug symbols from the binary
+lto = true    # Enable Link Time Optimization (LTO)
+codegen-units = 1 # Reduce Parallel Code Generation Units to Increase Optimization
+panic = 'unwind'
+debug-assertions = false
+incremental = false
+overflow-checks = false
+
+# There's a Cargo feature named profile-overrides
+# that lets you override the optimization level of dependencies.
+# https://docs.rust-embedded.org/book/unsorted/speed-vs-size.html
+[profile.release.package."*"]
+opt-level = 3
+strip = 'debuginfo'  # Automatically strip debug infos from the binary to reduce size
+codegen-units = 1 # Reduce Parallel Code Generation Units to Increase Optimization
+debug-assertions = false
+incremental = false
 overflow-checks = false

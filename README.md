@@ -24,7 +24,7 @@ taskset -c 1-4 ./target/release/tokio-server --cores 1 2 3 4
 
 Run client:
 ```
-./target/release/client --target 10.0.0.0:40000 --cores 1 2 3 4 --conns-per-core 150
+./target/release/client --target localhost:40000 --cores 1 2 3 4 --conns-per-core 150
 ```
 
 ## Benchmark result

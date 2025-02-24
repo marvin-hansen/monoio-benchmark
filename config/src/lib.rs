@@ -8,53 +8,28 @@ pub const COUNT_GRAIN_PRE_SEC: u32 = 10;
 #[derive(Parser, Debug, Clone, PartialEq)]
 #[clap(version = "1.0", author = "ihciah <ihciah@gmail.com>")]
 pub struct ServerConfig {
-    #[clap(
-        short,
-        long,
-        min_values = 1,
-        default_value = "1",
-        about = "cpu core id list"
-    )]
+    #[clap(short, long, min_values = 1, default_value = "1")]
+    /// "cpu core list"
     pub cores: Vec<u8>,
-    #[clap(
-        short,
-        long,
-        about = "bind address, like 127.0.0.1:8080",
-        default_value = "[::]:40000"
-    )]
+    #[clap(short, long, default_value = "[::]:40000")]
+    ///"bind address, like 127.0.0.1:8080",
     pub bind: String,
 }
 
 #[derive(Parser, Debug, Clone, PartialEq)]
 #[clap(version = "1.0", author = "ihciah <ihciah@gmail.com>")]
 pub struct ClientConfig {
-    #[clap(
-        short,
-        long,
-        min_values = 1,
-        default_value = "0",
-        about = "cpu core id list"
-    )]
+    #[clap(short, long, min_values = 1, default_value = "0")]
+    /// "cpu core id list"
     pub cores: Vec<u8>,
-    #[clap(
-        short = 'n',
-        long,
-        about = "connection numbers per core",
-        default_value = "50"
-    )]
+    #[clap(short = 'n', long, default_value = "50")]
+    /// "connection numbers per core",
     pub conns_per_core: usize,
-    #[clap(
-        short,
-        long,
-        about = "QPS limit per core, leave blank means unlimited"
-    )]
+    #[clap(short, long)]
+    /// "QPS limit per core, leave blank means unlimited"
     pub qps_per_core: Option<usize>,
-    #[clap(
-        short,
-        long,
-        about = "target address, like 127.0.0.1:8080",
-        default_value = "127.0.0.1:40000"
-    )]
+    #[clap(short, long, default_value = "127.0.0.1:40000")]
+    /// "target address, like 127.0.0.1:8080",
     pub target: String,
 }
 

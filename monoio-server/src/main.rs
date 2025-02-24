@@ -1,7 +1,11 @@
 use std::sync::Arc;
 
 use config::{ServerConfig, PACKET_SIZE};
-use monoio::{net::TcpListener, RuntimeBuilder, io::{AsyncReadRentExt, AsyncWriteRentExt}};
+use monoio::{
+    io::{AsyncReadRentExt, AsyncWriteRentExt},
+    net::TcpListener,
+    RuntimeBuilder,
+};
 
 fn main() {
     let cfg = Arc::new(ServerConfig::parse());
@@ -18,10 +22,11 @@ fn main() {
         let cpu_ = *cpu as _;
         let h = std::thread::spawn(move || {
             monoio::utils::bind_to_cpu_set(Some(cpu_)).unwrap();
-            let mut rt = RuntimeBuilder::<monoio::IoUringDriver>::new()
+            let mut rt = RuntimeBuilder::<monoio::LegacyDriver>::new()
                 .with_entries(32768)
                 .build()
                 .unwrap();
+
             rt.block_on(serve(cfg_));
         });
         threads.push(h);
