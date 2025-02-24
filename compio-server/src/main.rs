@@ -19,6 +19,9 @@ async fn main() {
         config::format_cores(&cfg.cores)
     );
 
+    // The big idea is to use the Dispatcher to create a pool of worker threads per core for the number
+    // of cores given by the configuration.
+    // Then run a task on ech core that only reads the message from the client and sends it back to the client.
     let listener = TcpListener::bind(&cfg.bind).await.unwrap();
     let dispatcher = Dispatcher::builder()
         .worker_threads(NonZeroUsize::new(nr_cores).unwrap())
